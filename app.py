@@ -66,14 +66,21 @@ if st.session_state.vector_store is not None:
 
         # retrieve docs
         docs = st.session_state.vector_store.similarity_search_with_score(
-            user_question,
-            k=5
-        )
+                user_question,
+                k=5
+            )
 
         docs = sorted(docs, key=lambda x: x[1])
 
+        best_score = docs[0][1]
+        
         context = "\n".join([doc[0].page_content for doc in docs[:3]])
 
+        # threshold tuning
+        if best_score > 1.2:
+            answer = "I couldn't find relevant information in the PDF."
+        else:
+            answer = ask_gemini(user_question, context)
         # generate answer
         with st.spinner("Generating answer..."):
             answer = ask_gemini(user_question, context)

@@ -7,11 +7,12 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 
 def ask_gemini(question, context):
     prompt = f"""
-    You are an AI Research Assistant.
+    You are a helpful AI assistant for a PDF document.
 
     Answer using the provided context.
 
     Rules:
+    - If the user greets (hi, hello, hey), respond politely and briefly.
     - Keep responses concise and structured.
     - Use bullet points when appropriate.
     - For summaries:
@@ -21,8 +22,14 @@ def ask_gemini(question, context):
     - Make reasonable inferences only from context.
     - Do not invent information.
     - If information is unavailable, say:
-    "I could not find that information in the PDF."
+    "This question is outside the PDF content. Please ask something from the document."
 
+    Important:
+    - Do NOT repeat the same greeting every time.
+    - Keep responses short and human-like.
+    - Avoid sounding robotic.
+
+    
     Context:
     {context}
 
